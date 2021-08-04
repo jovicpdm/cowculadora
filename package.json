@@ -19,6 +19,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
+    "react-native-flash-message": "^0.1.23",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-masked-text": "^1.13.0",
     "react-native-paper": "^4.9.2",

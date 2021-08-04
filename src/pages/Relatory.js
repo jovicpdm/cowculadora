@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import { DataTable } from 'react-native-paper';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import { DataTable, List} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { color } from 'react-native-reanimated';
 
 const Relatory = () => {
     const valorPesoBoi = 4.20;    
@@ -38,51 +39,79 @@ const Relatory = () => {
     const precoTotalBezerro = bezerro.pesoTotal * valorPesoBezerro;
     const precoTotalBezerra = bezerra.pesoTotal * valorPesoBezerra;
 
+    const [expanded, setExpanded] = useState(true);
+
+    const handlePress = () => setExpanded(!expanded);
+
+    const PersonalizedList = (props) => {
+                return (
+                <List.Accordion 
+                    title={`Relatório de ${props.title}`}
+                    style={styles.relatories}
+                >
+                    <List.Item title={`Peso total: ${props.pesoTotal}kg`}/>
+                    <List.Item title={`Número de ${props.title}: ${props.animals}`}/>
+                    <List.Item title={`Peso médio: ${props.pesoMedio}kg`}/>
+                    <List.Item title={`Valor total: R$${props.valorTotal}`}/>
+                    <List.Item title={`Valor medio: R$${props.valorMedio}`}/>
+                </List.Accordion>
+                )
+            
+    }
+
     return (
         <View>
             <Text style={styles.title}>
                 Relatório
             </Text>
-            <DataTable>
-                <DataTable.Header>
-                    <DataTable.Title>Animais</DataTable.Title>
-                    <DataTable.Title>Qtd</DataTable.Title>
-                    <DataTable.Title>Peso Total</DataTable.Title>
-                    <DataTable.Title>Peso Médio</DataTable.Title>
-                    <DataTable.Title numeric>Valor</DataTable.Title>
-                </DataTable.Header>
-                <DataTable.Row>
-                    <DataTable.Cell>Boi</DataTable.Cell>
-                    <DataTable.Cell>{boi.n != 0 ? boi.n : "-"}</DataTable.Cell>
-                    <DataTable.Cell>{boi.pesoTotal != 0 ? boi.pesoTotal : "-"}</DataTable.Cell>
-                    <DataTable.Cell>{boi.pesoTotal ? (boi.pesoTotal / boi.n) : "-"}</DataTable.Cell>
-                    <DataTable.Cell numeric>{precoTotalBoi != 0 ? precoTotalBoi : "-"}</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                    <DataTable.Cell>Vaca</DataTable.Cell>
-                    <DataTable.Cell>{vaca.n != 0 ? vaca.n : "-"}</DataTable.Cell>
-                    <DataTable.Cell>{vaca.pesoTotal != 0 ? vaca.pesoTotal : "-"}</DataTable.Cell>
-                    <DataTable.Cell>{vaca.pesoTotal != 0 ? (vaca.pesoTotal/ vaca.n) : "-" }</DataTable.Cell>
-                    <DataTable.Cell numeric>{precoTotalVaca != 0 ? precoTotalVaca : "-"}</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                    <DataTable.Cell>Bezerro</DataTable.Cell>
-                    <DataTable.Cell>{bezerro.n != 0 ? bezerro.n : "-"}</DataTable.Cell>
-                    <DataTable.Cell>{bezerro.pesoTotal != 0 ? bezerro.pesoTotal : "-"}</DataTable.Cell>
-                    <DataTable.Cell>{bezerro.pesoTotal !=0 ? (bezerro.pesoTotal / bezerro.n) : "-"}</DataTable.Cell>
-                    <DataTable.Cell numeric>{precoTotalBezerro != 0 ? precoTotalBezerro : "-"}</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                    <DataTable.Cell>Bezerra</DataTable.Cell>
-                    <DataTable.Cell>{bezerra.n != 0 ? bezerra.n : "-"}</DataTable.Cell>
-                    <DataTable.Cell>{bezerra.pesoTotal != 0 ? bezerra.pesoTotal : "-"}</DataTable.Cell>
-                    <DataTable.Cell>{bezerra.pesoTotal ? bezerra.pesoTotal / bezerra.n : "-"}</DataTable.Cell>
-                    <DataTable.Cell numeric>{precoTotalBezerra != 0 ? precoTotalBezerra : "-"}</DataTable.Cell>
-                </DataTable.Row>
-            </DataTable>
+            <List.Section title="Relatório por animais">
+                <PersonalizedList 
+                    expanded={expanded}
+                    onPress={handlePress}
+                    title="bois"
+                    pesoTotal={boi.pesoTotal}
+                    animals={boi.n}
+                    pesoMedio={boi.pesoTotal / boi.n}
+                    valorTotal={precoTotalBoi}
+                    valorMedio={precoTotalBoi / boi.n}
+                />
+                <PersonalizedList 
+                    expanded={expanded}
+                    onPress={handlePress}
+                    title="vacas"
+                    pesoTotal={vaca.pesoTotal}
+                    animals={vaca.n}
+                    pesoMedio={vaca.pesoTotal / vaca.n}
+                    valorTotal={precoTotalVaca}
+                    valorMedio={precoTotalVaca / vaca.n}
+                />
+                <PersonalizedList 
+                    expanded={expanded}
+                    onPress={handlePress}
+                    title="bezerros"
+                    pesoTotal={bezerro.pesoTotal}
+                    animals={bezerro.n}
+                    pesoMedio={bezerro.pesoTotal / bezerro.n}
+                    valorTotal={precoTotalBezerro}
+                    valorMedio={precoTotalBezerro / bezerro.n}
+                />
+                <PersonalizedList 
+                    expanded={expanded}
+                    onPress={handlePress}
+                    title="bezerras"
+                    pesoTotal={bezerra.pesoTotal}
+                    animals={bezerra.n}
+                    pesoMedio={bezerra.pesoTotal / bezerra.n}
+                    valorTotal={precoTotalBezerra}
+                    valorMedio={precoTotalBezerra / bezerra.n}
+                />
+            </List.Section>
 
             <Text style={[styles.results, styles.resultsAux]}>Peso total: {boi.pesoTotal + vaca.pesoTotal + bezerro.pesoTotal + bezerra.pesoTotal} KG</Text>
             <Text style={styles.results}>Valor total: R$ {precoTotalBoi + precoTotalVaca + precoTotalBezerro + precoTotalBezerra}</Text>
+            <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText}>Finalizar</Text>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -95,11 +124,6 @@ const styles = StyleSheet.create({
         fontSize: 34,
         color: "#4B9460"
     }, 
-    table: {
-        textAlign: 'center',
-        marginBottom: 32,
-        marginTop: 16
-    },
     results: {
         textAlign: 'center',
         fontSize: 16,
@@ -108,7 +132,31 @@ const styles = StyleSheet.create({
     }, 
     resultsAux: {
         marginTop: 32
-    }
+    },
+    relatories: {
+        marginVertical: 1,
+        backgroundColor: "hsla(0, 0%, 90%, 1.0)",
+        marginHorizontal: 4,
+        borderRadius: 4,
+    },    
+    button:{
+        marginTop: 40,
+        backgroundColor: "#018786",
+        alignSelf: 'center',
+        width: 312,
+        height: 48,
+        alignItems: 'center',
+        borderRadius: 10, 
+        shadowOpacity: (0.2, 0.12),
+        shadowColor: "rgba(0, 0, 0, 0.2)",
+        marginBottom: 16
+    },
+    buttonText: {
+        fontSize: 16,
+        marginTop: 13,
+        fontFamily: "RobotoRegular",
+        color: "rgba(255, 255, 255, 1)",
+    },
 })
 
 export default Relatory

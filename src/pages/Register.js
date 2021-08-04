@@ -1,20 +1,15 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, Alert, BackHandler} from 'react-native';
 import { TextInput, RadioButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {showMessage} from 'react-native-flash-message';
 
 function Register({navigation}){
 
     const [checked, setChecked] = useState("boi");
     const [peso, setPeso] = useState(0);
 
-    // const boi = {
-        // id: 1,
-        // n: 0,
-        // pesoTotal: 0,
-        // precoTotal: 0
-    // }
-    
+
     const [boi, setBoi] = useState({
         id: 1,
         n: 0,
@@ -46,6 +41,12 @@ function Register({navigation}){
                 n: boi.n + 1,
                 pesoTotal: parseFloat(boi.pesoTotal) + parseFloat(peso)
             }))
+            // alert(`Boi cadastrado (${peso} kg)`)
+            showMessage({
+                message: "Certo",
+                type: "success", 
+                position: 'center'
+            })
         } else if(checked == "vaca"){
             setVaca(prevState => ({
                 ...prevState,
@@ -65,8 +66,27 @@ function Register({navigation}){
                 pesoTotal: parseFloat(bezerra.pesoTotal) + parseFloat(peso)
             }))
         }
+
+        showMessage({
+            message: `${checked} adicionado! (${peso} kg)`,
+            type: "success", 
+            position: 'center'
+        })
     }
 
+    const createTwoButtonAlert = () =>
+    Alert.alert(
+      "Deseja finalizar a pesagem?",
+      ` Bois: ${boi.n}  Vacas: ${vaca.n}\n Bezerros: ${bezerro.n}  Bezerras: ${bezerra.n}`,
+      [
+        {
+          text: "Cancelar",
+          onPress: () => null,
+          style: "cancel"
+        },
+        { text: "Finalizar", onPress: () => saveData()}
+      ]
+    );
     const saveData = async () => {
         try {
             await AsyncStorage.setItem("bois", JSON.stringify(boi));
@@ -82,6 +102,7 @@ function Register({navigation}){
 
     return(
         <View>
+            <View></View>
             <Text style={styles.title}>Insira os dados</Text>
             <Text style={styles.titleWeight}>Informe o peso </Text>            
             <TextInput 
@@ -126,7 +147,7 @@ function Register({navigation}){
             <TouchableOpacity style={styles.buttonAdd} onPress={savePeso}>
                 <Text style={styles.buttonAddText}>ADICIONAR</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonFinalize} onPress={saveData}>
+            <TouchableOpacity style={styles.buttonFinalize} onPress={createTwoButtonAlert}>
                 <Text style={styles.buttonFinalizeText}>FINALIZAR</Text>
             </TouchableOpacity>
         </View>

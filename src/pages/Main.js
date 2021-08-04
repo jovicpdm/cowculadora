@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Dimensions, PixelRatio} from 'react-native';
 
 function Main({navigation}) {
     
     return (
-        <View>
+        <View style={styles.container}>
+            <Text style={styles.welcome}>Bem vindo ao</Text>
             <Text style={[styles.title]}>Cowculadora</Text>
             <Text style={styles.text}>Sua calculadora de preço de bovinos</Text>
             <Text style={styles.text}>Basta escolher o animal e digitar o peso para obter o valor da sua venda/compra</Text>
@@ -21,10 +22,16 @@ function Main({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center'
     },
+    welcome: {
+        textAlign: 'center',
+        fontFamily: "RobotoRegular",
+        fontSize: 16,
+        lineHeight: 24,
+        marginTop: 80,
+        color: "rgba(0,0,0,0.87)"
+    }, 
     title: {
-        paddingTop: 80,
         textAlign: 'center',
         fontSize: 48,
         fontFamily: "RobotoRegular",
@@ -39,7 +46,7 @@ const styles = StyleSheet.create({
         lineHeight: 24,
         marginBottom: 40,
         color: "rgba(0,0,0,0.87)"
-    }, 
+    },
     button: {
         backgroundColor: "rgba(1, 135, 134, 1)",
         alignSelf: 'center',

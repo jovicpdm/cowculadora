@@ -11,15 +11,13 @@ const Stack = createStackNavigator();
 
 function Routes() {
   return (
-    <NavigationContainer>
       <Stack.Navigator screenOptions={{
-          headerShown: false
-      }}>
+          headerShown: false, 
+      } }>
         <Stack.Screen name="Main" component={Main}/>
         <Stack.Screen name="Register" component={Register}/>
         <Stack.Screen name="Relatory" component={Relatory} />
       </Stack.Navigator>
-    </NavigationContainer>
   );
 }
 
