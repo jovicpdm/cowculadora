@@ -74,7 +74,7 @@ function Register({navigation}){
         })
     }
 
-    const createTwoButtonAlert = () =>
+    const confirmData = () =>
     Alert.alert(
       "Deseja finalizar a pesagem?",
       ` Bois: ${boi.n}  Vacas: ${vaca.n}\n Bezerros: ${bezerro.n}  Bezerras: ${bezerra.n}`,
@@ -87,6 +87,8 @@ function Register({navigation}){
         { text: "Finalizar", onPress: () => saveData()}
       ]
     );
+
+
     const saveData = async () => {
         try {
             await AsyncStorage.setItem("bois", JSON.stringify(boi));
@@ -147,7 +149,7 @@ function Register({navigation}){
             <TouchableOpacity style={styles.buttonAdd} onPress={savePeso}>
                 <Text style={styles.buttonAddText}>ADICIONAR</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonFinalize} onPress={createTwoButtonAlert}>
+            <TouchableOpacity style={styles.buttonFinalize} onPress={confirmData}>
                 <Text style={styles.buttonFinalizeText}>FINALIZAR</Text>
             </TouchableOpacity>
         </View>

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import { DataTable, List} from 'react-native-paper';
+import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+import {List} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { color } from 'react-native-reanimated';
 
-const Relatory = () => {
+const Relatory = ({navigation}) => {
     const valorPesoBoi = 4.20;    
     const valorPesoVaca = 3.90;
     const valorPesoBezerro = 9.50;
@@ -49,15 +48,28 @@ const Relatory = () => {
                     title={`Relatório de ${props.title}`}
                     style={styles.relatories}
                 >
-                    <List.Item title={`Peso total: ${props.pesoTotal}kg`}/>
-                    <List.Item title={`Número de ${props.title}: ${props.animals}`}/>
-                    <List.Item title={`Peso médio: ${props.pesoMedio}kg`}/>
-                    <List.Item title={`Valor total: R$${props.valorTotal}`}/>
-                    <List.Item title={`Valor medio: R$${props.valorMedio}`}/>
+                    <List.Item title={`Peso total: ${props.pesoTotal > 0 ? props.pesoTotal : '-'}kg`}/>
+                    <List.Item title={`Número de ${props.title}: ${props.animals > 0 ? props.animals: '-'}`}/>
+                    <List.Item title={`Peso médio: ${props.pesoMedio > 0 ? props.pesoMedio : '-'}kg`}/>
+                    <List.Item title={`Valor total: R$${props.valorTotal > 0 ? props.valorTotal : '-'}`}/>
+                    <List.Item title={`Valor medio: R$${props.valorMedio > 0 ? props.valorMedio : '-'}`}/>
                 </List.Accordion>
                 )
-            
     }
+
+    const confirmData = () =>
+    Alert.alert(
+      "Deseja finalizar a pesagem?",
+      "Você encerrará essa sessão de pesagem",
+      [
+        {
+          text: "Cancelar",
+          onPress: () => null,
+          style: "cancel"
+        },
+        { text: "Finalizar", onPress: () => navigation.navigate("Main")}
+      ]
+    );
 
     return (
         <View>
@@ -109,7 +121,7 @@ const Relatory = () => {
 
             <Text style={[styles.results, styles.resultsAux]}>Peso total: {boi.pesoTotal + vaca.pesoTotal + bezerro.pesoTotal + bezerra.pesoTotal} KG</Text>
             <Text style={styles.results}>Valor total: R$ {precoTotalBoi + precoTotalVaca + precoTotalBezerro + precoTotalBezerra}</Text>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={confirmData}>
                 <Text style={styles.buttonText}>Finalizar</Text>
             </TouchableOpacity>
         </View>
