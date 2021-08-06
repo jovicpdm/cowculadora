@@ -35,43 +35,48 @@ function Register({navigation}){
     }
 )
     const savePeso = () => {
-        if(checked == "boi"){
-            setBoi(prevState => ({
-                ...prevState,
-                n: boi.n + 1,
-                pesoTotal: parseFloat(boi.pesoTotal) + parseFloat(peso)
-            }))
-            // alert(`Boi cadastrado (${peso} kg)`)
+        if(peso >= 0){
+            if(checked == "boi"){
+                setBoi(prevState => ({
+                    ...prevState,
+                    n: boi.n + 1,
+                    pesoTotal: parseFloat(boi.pesoTotal) + parseFloat(peso)
+                }))
+                // alert(`Boi cadastrado (${peso} kg)`)
+                showMessage({
+                    message: "Certo",
+                    type: "success", 
+                    position: 'center'
+                })
+            } else if(checked == "vaca"){
+                setVaca(prevState => ({
+                    ...prevState,
+                    n: vaca.n + 1,
+                    pesoTotal: parseFloat(vaca.pesoTotal) + parseFloat(peso)
+                }))            
+            } else if(checked == "bezerro"){
+                setBezerro(prevState => ({
+                    ...prevState,
+                    n: bezerro.n + 1,
+                    pesoTotal: parseFloat(bezerro.pesoTotal) + parseFloat(peso)
+                }))
+            } else if (checked == "bezerra"){
+                setBezerra(prevState => ({
+                    ...prevState,
+                    n: bezerra.n + 1,
+                    pesoTotal: parseFloat(bezerra.pesoTotal) + parseFloat(peso)
+                }))
+            }
+
             showMessage({
-                message: "Certo",
+                message: `${checked} adicionado! (${peso} kg)`,
                 type: "success", 
                 position: 'center'
-            })
-        } else if(checked == "vaca"){
-            setVaca(prevState => ({
-                ...prevState,
-                n: vaca.n + 1,
-                pesoTotal: parseFloat(vaca.pesoTotal) + parseFloat(peso)
-            }))            
-        } else if(checked == "bezerro"){
-            setBezerro(prevState => ({
-                ...prevState,
-                n: bezerro.n + 1,
-                pesoTotal: parseFloat(bezerro.pesoTotal) + parseFloat(peso)
-            }))
-        } else if (checked == "bezerra"){
-            setBezerra(prevState => ({
-                ...prevState,
-                n: bezerra.n + 1,
-                pesoTotal: parseFloat(bezerra.pesoTotal) + parseFloat(peso)
-            }))
+                }
+            )
+        } else {
+            alert("Número inválido")
         }
-
-        showMessage({
-            message: `${checked} adicionado! (${peso} kg)`,
-            type: "success", 
-            position: 'center'
-        })
     }
 
     const confirmData = () =>
